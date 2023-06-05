@@ -3,28 +3,29 @@ package h2tk.ecom.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "IdentityRoles")
-public class IdentityRoles {
+@Table(name = "Categories")
+public class Categories {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private int id;
 
     @Column(name = "name")
     private String name;
 
-    public IdentityRoles() {
+    public Categories() {
     }
 
-    public IdentityRoles(String id, String name) {
+    public Categories(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -36,4 +37,5 @@ public class IdentityRoles {
         this.name = name;
     }
 
+    
 }

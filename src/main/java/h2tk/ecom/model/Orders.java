@@ -1,6 +1,7 @@
 package h2tk.ecom.model;
 
 import java.sql.Date;
+import java.util.Set;
 
 import jakarta.persistence.*;
 
@@ -9,154 +10,92 @@ import jakarta.persistence.*;
 public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
-    @Column(name = "customer_name", nullable = false)
-    private String customerName;
+    @Column(name = "paid")
+    private double pain;
 
-    @Column(name = "customer_address", nullable = false)
-    private String customerAddress;
+    @Column(name = "delivered")
+    private boolean delivered;
 
-    @Column(name = "customer_email", nullable = false)
-    private String customerEmail;
+    @Column(name = "order_date")
+    private Date orderDate;
 
-    @Column(name = "customer_phone", nullable = false)
-    private String customerPhone;
+    @Column(name = "delivery_date")
+    private Date deliveryDate;
+    
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    Users User;
 
-    @Column(name = "customer_message", nullable = false)
-    private String customerMessage;
-
-    @Column(name = "payment_method")
-    private String paymentMethod;
-
-    @Column(name = "created_date")
-    private Date createdDate;
-
-    @Column(name = "created_by")
-    private String createdBy;
-
-    @Column(name = "payment_status")
-    private String paymentStatus;
-
-    @Column(name = "status", nullable = false)
-    private boolean status;
-
-    @Column(name = "customer_id")
-    private String customerId;
+    @OneToMany(mappedBy = "order")
+    Set<OrderProduct> orderProduct;  
 
     public Orders() {
     }
 
-    public Orders(Integer id, String customerName, String customerAddress, String customerEmail, String customerPhone,
-            String customerMessage, String paymentMethod, Date createdDate, String createdBy, String paymentStatus,
-            boolean status, String customerId) {
+    public Orders(int id, double pain, boolean delivered, Date orderDate, Date deliveryDate, Users user) {
         this.id = id;
-        this.customerName = customerName;
-        this.customerAddress = customerAddress;
-        this.customerEmail = customerEmail;
-        this.customerPhone = customerPhone;
-        this.customerMessage = customerMessage;
-        this.paymentMethod = paymentMethod;
-        this.createdDate = createdDate;
-        this.createdBy = createdBy;
-        this.paymentStatus = paymentStatus;
-        this.status = status;
-        this.customerId = customerId;
+        this.pain = pain;
+        this.delivered = delivered;
+        this.orderDate = orderDate;
+        this.deliveryDate = deliveryDate;
+        User = user;
     }
 
-    public Integer getId() {
+    public Users getUser() {
+        return User;
+    }
+
+    public void setUser(Users user) {
+        User = user;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public double getPain() {
+        return pain;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setPain(double pain) {
+        this.pain = pain;
     }
 
-    public String getCustomerAddress() {
-        return customerAddress;
+    public boolean isDelivered() {
+        return delivered;
     }
 
-    public void setCustomerAddress(String customerAddress) {
-        this.customerAddress = customerAddress;
+    public void setDelivered(boolean delivered) {
+        this.delivered = delivered;
     }
 
-    public String getCustomerEmail() {
-        return customerEmail;
+    public Date getOrderDate() {
+        return orderDate;
     }
 
-    public void setCustomerEmail(String customerEmail) {
-        this.customerEmail = customerEmail;
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
     }
 
-    public String getCustomerPhone() {
-        return customerPhone;
+    public Date getDeliveryDate() {
+        return deliveryDate;
     }
 
-    public void setCustomerPhone(String customerPhone) {
-        this.customerPhone = customerPhone;
+    public void setDeliveryDate(Date deliveryDate) {
+        this.deliveryDate = deliveryDate;
     }
 
-    public String getCustomerMessage() {
-        return customerMessage;
+    public Set<OrderProduct> getOrderProduct() {
+        return orderProduct;
     }
 
-    public void setCustomerMessage(String customerMessage) {
-        this.customerMessage = customerMessage;
-    }
-
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public String getPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(String paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public String getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public void setOrderProduct(Set<OrderProduct> orderProduct) {
+        this.orderProduct = orderProduct;
     }
 }

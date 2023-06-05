@@ -3,30 +3,28 @@ package h2tk.ecom.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "MenuGroups")
-public class MenuGroups {
-
+@Table(name = "Roles")
+public class Roles {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+    private int id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 
-    public MenuGroups() {
+    public Roles() {
     }
 
-    public MenuGroups(Integer id, String name) {
+    public Roles(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -37,5 +35,4 @@ public class MenuGroups {
     public void setName(String name) {
         this.name = name;
     }
-
 }
