@@ -9,4 +9,9 @@ public class test {
     public String Index(){
         return "content_page/index";
     }
+
+    @GetMapping("/admin")
+    public String Index1(){
+        return "content_page/indexAdmin";
+    }
 }
