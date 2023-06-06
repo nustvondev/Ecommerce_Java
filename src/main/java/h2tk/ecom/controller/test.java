@@ -12,6 +12,6 @@ public class test {
 
     @GetMapping("/admin")
     public String Index1(){
-        return "content_page/indexAdmin";
+        return "content_page/ManageCategory";
     }
 }
