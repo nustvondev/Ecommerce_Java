@@ -23,24 +23,25 @@ $(document).ready(()=>{
         });
     });
 
-
-
     //delete category
     $(document).on("click", ".delete-btn", function() {
         let categoryId = $(this).attr('data-id');
-        if (confirm("Are you sure you want to delete this category?")) {
+        $('#confirmModal').show();
+        $('#confirmAction').click(function (){
             $.ajax({
-                url: "/apiCategories/deleteCategory/" + categoryId,
-                method: "GET",
-                success: function(response) {
-                    alert(response);
-                    loadCategory();
-                },
-                error: function() {
-                    alert("Failed to delete category");
-                }
-            });
-        }
+                        url: "/apiCategories/deleteCategory/" + categoryId,
+                        method: "GET",
+                        success: function() {
+                            loadCategory();
+                            $('#confirmModal').hide();
+
+                        },
+                        error: function() {
+                            alert("Failed to delete category");
+                        }
+                    });
+        });
+        cancelAction();
     });
 
     //update category
@@ -55,23 +56,24 @@ $(document).ready(()=>{
                 let updateNameCategory = {
                     name: nameUpdate
                 }
-
-            if (confirm("Are you sure you want to update this category?")) {
-                $.ajax({
-                    url: "/apiCategories/updateCategory/" + categoryId,
-                    method: "PUT",
-                    contentType: "application/json",
-                    data: JSON.stringify(updateNameCategory),
-                    success: function(response) {
-                        alert(response);
-                        $("#nameCategory").val('')// Reset form
-                        loadCategory();
-                    },
-                    error: function() {
-                        alert("Failed to update category");
-                    }
+                $('#confirmModal').show();
+                $('#confirmAction').click(function (){
+                        $.ajax({
+                            url: "/apiCategories/updateCategory/" + categoryId,
+                            method: "PUT",
+                            contentType: "application/json",
+                            data: JSON.stringify(updateNameCategory),
+                            success: function(response) {
+                                $("#nameCategory").val('')// Reset form
+                                loadCategory();
+                                $('#confirmModal').hide();
+                            },
+                            error: function() {
+                                alert("Failed to update category");
+                            }
+                        });
                 });
-            }
+                cancelAction();
             }
         }
 
@@ -99,5 +101,11 @@ function loadCategory(){
                 '</tr>';
             $("#lst-category").append(categoryHtml);
         });
+    });
+}
+
+function cancelAction(){
+    $("#cancelAction").click(function () {
+        $("#confirmModal").hide();
     });
 }
