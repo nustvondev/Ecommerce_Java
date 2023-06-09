@@ -1,5 +1,15 @@
 $(document).ready(()=>{
    loadCategory();
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "positionClass": "toast-bottom-right",
+        "onclick": null,
+        "fadeIn": 300,
+        "fadeOut": 1000,
+        "timeOut": 5000,
+        "extendedTimeOut": 1000
+    }
 
     // add category
     $("#frmCategory").submit(function (event){
@@ -13,12 +23,12 @@ $(document).ready(()=>{
                 name: $("#nameCategory").val(),
             }),
             success: (response) => {
-                alert("Category added successfully");
+                toastr.success("Category added successfully");
                 $("#nameCategory").val('')// Reset form
                 loadCategory();
             },
             error: () => {
-                alert("Category added Failed");
+                toastr.error("Category added failed");
             },
         });
     });
@@ -27,17 +37,23 @@ $(document).ready(()=>{
     $(document).on("click", ".delete-btn", function() {
         let categoryId = $(this).attr('data-id');
         $('#confirmModal').show();
-        $('#confirmAction').click(function (){
+        $('#confirmAction').off().on("click",function (){
             $.ajax({
                         url: "/apiCategories/deleteCategory/" + categoryId,
                         method: "GET",
-                        success: function() {
+                        success: function(response) {
+                            toastr.success(response,{
+                                closeButton: true,
+                                positionClass: "toast-bottom-right",
+                            });
                             loadCategory();
                             $('#confirmModal').hide();
 
                         },
-                        error: function() {
-                            alert("Failed to delete category");
+                        error: function(response) {
+                            toastr.error(response,{
+                                closeButton: true
+                            });
                         }
                     });
         });
@@ -50,14 +66,16 @@ $(document).ready(()=>{
         let nameUpdate = $("#nameCategory").val();
 
         if(nameUpdate === ""){
-            alert("Can't empty!!!");
+            toastr.success("can't empty",{
+                closeButton: true
+            });
         }else {
             if(nameUpdate){
                 let updateNameCategory = {
                     name: nameUpdate
                 }
                 $('#confirmModal').show();
-                $('#confirmAction').click(function (){
+                $('#confirmAction').off().on("click",function (){
                         $.ajax({
                             url: "/apiCategories/updateCategory/" + categoryId,
                             method: "PUT",
@@ -65,11 +83,12 @@ $(document).ready(()=>{
                             data: JSON.stringify(updateNameCategory),
                             success: function(response) {
                                 $("#nameCategory").val('')// Reset form
+                                toastr.success(response);
                                 loadCategory();
                                 $('#confirmModal').hide();
                             },
-                            error: function() {
-                                alert("Failed to update category");
+                            error: function(response) {
+                                toastr.error(response);
                             }
                         });
                 });
