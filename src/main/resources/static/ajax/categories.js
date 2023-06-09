@@ -1,3 +1,4 @@
+
 $(document).ready(()=>{
    loadCategory();
     toastr.options = {
@@ -42,18 +43,13 @@ $(document).ready(()=>{
                         url: "/apiCategories/deleteCategory/" + categoryId,
                         method: "GET",
                         success: function(response) {
-                            toastr.success(response,{
-                                closeButton: true,
-                                positionClass: "toast-bottom-right",
-                            });
+                            toastr.success(response);
                             loadCategory();
                             $('#confirmModal').hide();
 
                         },
                         error: function(response) {
-                            toastr.error(response,{
-                                closeButton: true
-                            });
+                            toastr.error(response);
                         }
                     });
         });
@@ -108,7 +104,6 @@ $(document).ready(()=>{
 function loadCategory(){
     $.get("/apiCategories/ListCategory",(data)=>{
         $("#lst-category").empty();
-
         $.each(data, (index, category)=>{
             let categoryHtml = '<tr>' +
                 '<td>' + category.id + '</td>' +
@@ -120,9 +115,9 @@ function loadCategory(){
                 '</tr>';
             $("#lst-category").append(categoryHtml);
         });
-    });
-}
 
+    });
+};
 function cancelAction(){
     $("#cancelAction").click(function () {
         $("#confirmModal").hide();
