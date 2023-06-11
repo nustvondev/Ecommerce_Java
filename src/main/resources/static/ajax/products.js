@@ -40,8 +40,8 @@ function loadProducts(){
                 '<td>' + products.updatedDate + '</td>' +
                 '<td>' + products.category.name + '</td>' +
                 '<td> <div class="button-group">' +
-                '<button class="btn btn-warning delete-btn" data-id="' + products.id + '">Delete</button>' +
-                '<button class="btn btn-primary update-btn" data-id="' + products.id + '">Update</button>' +
+                '<button class="btn btn-warning delete-btn" data-toggle="modal" data-target="#confirmModal" data-id="' + products.id + '">Delete</button>' +
+                '<button class="btn btn-primary update-btn" data-toggle="modal" data-target="#productModal" data-id="' + products.id + '">Update</button>' +
                 '</div></td>' +
                 '</tr>';
             $("#lst-product").append(productHtml);
@@ -87,10 +87,64 @@ function addProduct() {
     });
 }
 
-function deleteProduct() {
+function cancelAction(){
+    $("#cancelAction").click(function () {
+        $("#confirmModal").hide();
+    });
+}
 
+function deleteProduct() {
+    $(document).on("click",".delete-btn",function () {
+        let productId = $(this).attr('data-id');
+        $("#confirmModal").show();
+        $("#confirmAction").off().on("click",function () {
+            $.ajax({
+                url: "/apiProduct/deleteProduct/" + productId,
+                method: "GET",
+                success: function (response) {
+                    toastr.success(response);
+                    loadProducts();
+                    $("#confirmModal").hide();
+                    $('.modal-backdrop').remove();
+                },
+                error: function (response) {
+                    toastr.error(response);
+                }
+            });
+
+        });
+        cancelAction();
+    });
 }
 
 function updateProduct() {
+    $(document).on("click",".update-btn",function () {
+        let productId = $(this).attr('data-id');
 
+        $("#productModal").show();
+        $("#update").on("click",function () {
+            const formData = new FormData();
+            formData.append("name", $("#nameProduct1").val());
+            formData.append("brand", $("#Brand1").val());
+            formData.append("price", $("#Price1").val());
+            formData.append("imageProduct", $("#imageProduct1")[0].files[0]);
+            formData.append("category", $(".lst-categories").val());
+            $.ajax({
+                url: "/apiProduct/updateProduct/" + productId,
+                method: "PUT",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    toastr.success(response);
+                    loadProducts();
+                    $("#productModal").hide();
+                    $('.modal-backdrop').remove();
+                    },
+                error: function (response) {
+                    toastr.error(response);
+                }
+            });
+        })
+    })
 }

@@ -13,7 +13,8 @@
 </head>
 <body>
 
-<div class="modal" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+<!--// model delete-->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -33,6 +34,47 @@
   </div>
 </div>
 
+
+<!-- The modal -->
+<div class="modal fade" id="productModal" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="productModalLabel">Add Product</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="frmProduct1" name="frmProduct1" enctype="multipart/form-data">
+          <div class="form-group">
+            <label>Name Product</label>
+            <input type="text" name="nameProduct1" id="nameProduct1" class="form-control" placeholder="Product Name" size="30px" required>
+          </div>
+          <div class="form-group">
+            <label>Brand</label>
+            <input type="text" name="Brand1" id="Brand1" class="form-control" placeholder="Brand" size="30px" required>
+          </div>
+          <div class="form-group">
+            <label>Price</label>
+            <input type="text" name="Price1" id="Price1" class="form-control" placeholder="Price" size="30px" required>
+          </div>
+          <div class="form-group">
+            <label>Categories</label>
+            <select class="form-control lst-categories"></select>
+          </div>
+          <div class="form-group">
+            <input type="file" name="imageProduct1" id="imageProduct1" accept="image/*">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary"  id="update">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="row">
   <div class="col-sm-4">

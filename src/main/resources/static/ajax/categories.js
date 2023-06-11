@@ -30,8 +30,8 @@ function loadCategory(){
                 '<td>' + category.id + '</td>' +
                 '<td>' + category.name + '</td>' +
                 '<td> <div class="button-group">' +
-                '<button class="btn btn-warning delete-btn" data-id="' + category.id + '">Delete</button>' +
-                '<button class="btn btn-primary update-btn" data-id="' + category.id + '">Update</button>' +
+                '<button class="btn btn-warning delete-btn" data-toggle="modal" data-target="#confirmModal" data-id="' + category.id + '">Delete</button>' +
+                '<button class="btn btn-primary update-btn" data-toggle="modal" data-target="#confirmModal" data-id="' + category.id + '">Update</button>' +
                 '</div></td>' +
                 '</tr>';
             $("#lst-category").append(categoryHtml);
@@ -81,7 +81,7 @@ function deleteCategory() {
                     toastr.success(response);
                     loadCategory();
                     $('#confirmModal').hide();
-
+                    $('.modal-backdrop').remove();
                 },
                 error: function(response) {
                     toastr.error(response);
@@ -117,6 +117,7 @@ function updateCategory() {
                             toastr.success(response);
                             loadCategory();
                             $('#confirmModal').hide();
+                            $('.modal-backdrop').remove();
                         },
                         error: function(response) {
                             toastr.error(response);

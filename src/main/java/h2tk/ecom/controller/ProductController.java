@@ -57,18 +57,32 @@ public class ProductController {
         }
     }
 
-    @PutMapping("/updateProduct/{id}")
-    public ResponseEntity<String> update(@PathVariable int id,@RequestBody Products product){
-        try{
-            Products exitProduct = ProductRepo.findById(id).orElse(null);
-            if(exitProduct == null){
-                return ResponseEntity.notFound().build();
-            }
-            exitProduct.setName(product.getName());
-            ProductRepo.save(exitProduct);
-            return ResponseEntity.ok("Product updated successfully");
-        }catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update product");
+    @PutMapping("/updateProduct/{productId}")
+    public ResponseEntity<String> updateProduct(@PathVariable("productId") int productId,
+                                                @ModelAttribute Products updatedProduct,
+                                                @RequestParam(required = false) MultipartFile imageProduct) {
+        Products existingProduct = ProductRepo.findById(productId).orElse(null);
+        if (existingProduct == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
         }
+        existingProduct.setName(updatedProduct.getName());
+        existingProduct.setBrand(updatedProduct.getBrand());
+        existingProduct.setPrice(updatedProduct.getPrice());
+        existingProduct.setCategory(updatedProduct.getCategory());
+        if (imageProduct != null && imageProduct.getSize() > 0) {
+            try {
+                File saveFile = new ClassPathResource("/static/images/").getFile();
+                String newImageFile = UUID.randomUUID() + ".png";
+                Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + newImageFile);
+                Files.copy(imageProduct.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+                existingProduct.setImage(newImageFile);
+            } catch (Exception ex) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update product");
+            }
+        }
+
+        ProductRepo.save(existingProduct);
+        return ResponseEntity.ok("Product updated successfully");
     }
+
 }
