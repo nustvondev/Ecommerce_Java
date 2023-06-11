@@ -30,6 +30,12 @@ public class Users {
     @Column(name = "birthday")
     private Date birthday;
 
+    @Column(name = "active")
+    private Boolean isActive;
+
+    @Column(name = "token")
+    private String token;
+
     @ManyToMany
     @JoinTable(
       name = "User_Role", 
@@ -41,7 +47,7 @@ public class Users {
     }
 
     public Users(int id, String username, String password, String phoneNumber, boolean gender, String address,
-            Date birthday) {
+            Date birthday, Boolean isActive, String token) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -49,6 +55,8 @@ public class Users {
         this.gender = gender;
         this.address = address;
         this.birthday = birthday;
+        this.isActive = isActive;
+        this.token = token;
     }
 
     public int getId() {
@@ -113,5 +121,21 @@ public class Users {
 
     public void setUserRoles(Set<Roles> userRoles) {
         this.userRoles = userRoles;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

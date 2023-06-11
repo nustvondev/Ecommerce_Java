@@ -79,8 +79,6 @@ function deleteCategory() {
                 success: function(response) {
                     toastr.success(response);
                     loadCategory();
-                    $('#confirmModal').hide();
-                    $('.modal-backdrop').remove();
                 },
                 error: function(response) {
                     toastr.error(response);
@@ -114,8 +112,6 @@ function updateCategory() {
                             $("#nameCategory").val('')// Reset form
                             toastr.success(response);
                             loadCategory();
-                            $('#confirmModal').hide();
-                            $('.modal-backdrop').remove();
                         },
                         error: function(response) {
                             toastr.error(response);

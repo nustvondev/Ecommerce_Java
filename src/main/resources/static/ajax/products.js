@@ -103,8 +103,6 @@ function deleteProduct() {
                 success: function (response) {
                     toastr.success(response);
                     loadProducts();
-                    $("#confirmModal").hide();
-                    $('.modal-backdrop').remove();
                 },
                 error: function (response) {
                     toastr.error(response);
@@ -127,7 +125,6 @@ function updateProduct() {
                $("#nameProduct1").val(product.name);
                $("#Brand1").val(product.brand);
                $("#Price1").val(product.price);
-               // Chọn tùy chọn tương ứng với category của sản phẩm
                $(".lst-categories").val(product.category.id).prop("selected", true);
            },
             error: function () {
@@ -136,7 +133,7 @@ function updateProduct() {
         });
 
 
-        $("#update").on("click",function () {
+        $("#update").off().on("click",function () {
             const formData = new FormData();
             formData.append("name", $("#nameProduct1").val());
             formData.append("brand", $("#Brand1").val());
@@ -152,8 +149,6 @@ function updateProduct() {
                 success: function (response) {
                     toastr.success(response);
                     loadProducts();
-                    $("#productModal").hide();
-                    $('.modal-backdrop').remove();
                     },
                 error: function (response) {
                     toastr.error(response);
