@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -26,6 +27,11 @@ public class ProductController {
     @GetMapping("/ListProduct")
     public List<Products> listAll() {
         return ProductRepo.findAll();
+    }
+
+    @GetMapping("/GetProductById/{id}")
+    public Optional<Products> productbyId(@PathVariable int id){
+        return ProductRepo.findById(id);
     }
 
     @PostMapping("/saveProduct")

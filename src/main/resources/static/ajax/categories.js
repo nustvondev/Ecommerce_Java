@@ -72,7 +72,6 @@ function deleteCategory() {
     //delete category
     $(document).on("click", ".delete-btn", function() {
         let categoryId = $(this).attr('data-id');
-        $('#confirmModal').show();
         $('#confirmAction').off().on("click",function (){
             $.ajax({
                 url: "/apiCategories/deleteCategory/" + categoryId,
@@ -105,7 +104,6 @@ function updateCategory() {
                 let updateNameCategory = {
                     name: nameUpdate
                 }
-                $('#confirmModal').show();
                 $('#confirmAction').off().on("click",function (){
                     $.ajax({
                         url: "/apiCategories/updateCategory/" + categoryId,
@@ -127,6 +125,5 @@ function updateCategory() {
                 cancelAction();
             }
         }
-
     });
 }
