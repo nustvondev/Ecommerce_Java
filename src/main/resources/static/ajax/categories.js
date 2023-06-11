@@ -1,6 +1,5 @@
 
 $(document).ready(()=>{
-   loadCategory();
     toastr.options = {
         "closeButton": true,
         "debug": false,
@@ -12,93 +11,15 @@ $(document).ready(()=>{
         "extendedTimeOut": 1000
     }
 
-    // add category
-    $("#frmCategory").submit(function (event){
-        event.preventDefault();
-        var form = $(this);
-        $.ajax({
-            url: "/apiCategories/saveCategory",
-            method: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({
-                name: $("#nameCategory").val(),
-            }),
-            success: (response) => {
-                toastr.success("Category added successfully");
-                $("#nameCategory").val('')// Reset form
-                loadCategory();
-            },
-            error: () => {
-                toastr.error("Category added failed");
-            },
-        });
-    });
-
-    //delete category
-    $(document).on("click", ".delete-btn", function() {
-        let categoryId = $(this).attr('data-id');
-        $('#confirmModal').show();
-        $('#confirmAction').off().on("click",function (){
-            $.ajax({
-                        url: "/apiCategories/deleteCategory/" + categoryId,
-                        method: "GET",
-                        success: function(response) {
-                            toastr.success(response);
-                            loadCategory();
-                            $('#confirmModal').hide();
-
-                        },
-                        error: function(response) {
-                            toastr.error(response);
-                        }
-                    });
-        });
-        cancelAction();
-    });
-
-    //update category
-    $(document).on("click",".update-btn", function (){
-        let categoryId = $(this).attr('data-id');
-        let nameUpdate = $("#nameCategory").val();
-
-        if(nameUpdate === ""){
-            toastr.success("can't empty",{
-                closeButton: true
-            });
-        }else {
-            if(nameUpdate){
-                let updateNameCategory = {
-                    name: nameUpdate
-                }
-                $('#confirmModal').show();
-                $('#confirmAction').off().on("click",function (){
-                        $.ajax({
-                            url: "/apiCategories/updateCategory/" + categoryId,
-                            method: "PUT",
-                            contentType: "application/json",
-                            data: JSON.stringify(updateNameCategory),
-                            success: function(response) {
-                                $("#nameCategory").val('')// Reset form
-                                toastr.success(response);
-                                loadCategory();
-                                $('#confirmModal').hide();
-                            },
-                            error: function(response) {
-                                toastr.error(response);
-                            }
-                        });
-                });
-                cancelAction();
-            }
-        }
-
-    });
+    loadCategory();
+    addCategory();
+    deleteCategory();
+    updateCategory();
 
     // reset form
     $(document).on("click","#reset",function () {
         $("#nameCategory").val('')// Reset form
     });
-
 });
 
 function loadCategory(){
@@ -121,5 +42,90 @@ function loadCategory(){
 function cancelAction(){
     $("#cancelAction").click(function () {
         $("#confirmModal").hide();
+    });
+}
+
+function addCategory() {
+    // add category
+    $("#frmCategory").submit(function (event){
+        event.preventDefault();
+        $.ajax({
+            url: "/apiCategories/saveCategory",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                name: $("#nameCategory").val(),
+            }),
+            success: (response) => {
+                toastr.success("Category added successfully");
+                $("#nameCategory").val('')// Reset form
+                loadCategory();
+            },
+            error: () => {
+                toastr.error("Category added failed");
+            },
+        });
+    });
+}
+
+function deleteCategory() {
+    //delete category
+    $(document).on("click", ".delete-btn", function() {
+        let categoryId = $(this).attr('data-id');
+        $('#confirmModal').show();
+        $('#confirmAction').off().on("click",function (){
+            $.ajax({
+                url: "/apiCategories/deleteCategory/" + categoryId,
+                method: "GET",
+                success: function(response) {
+                    toastr.success(response);
+                    loadCategory();
+                    $('#confirmModal').hide();
+
+                },
+                error: function(response) {
+                    toastr.error(response);
+                }
+            });
+        });
+        cancelAction();
+    });
+}
+
+function updateCategory() {
+    //update category
+    $(document).on("click",".update-btn", function (){
+        let categoryId = $(this).attr('data-id');
+        let nameUpdate = $("#nameCategory").val();
+
+        if(nameUpdate === ""){
+            toastr.error("can't empty");
+        }else {
+            if(nameUpdate){
+                let updateNameCategory = {
+                    name: nameUpdate
+                }
+                $('#confirmModal').show();
+                $('#confirmAction').off().on("click",function (){
+                    $.ajax({
+                        url: "/apiCategories/updateCategory/" + categoryId,
+                        method: "PUT",
+                        contentType: "application/json",
+                        data: JSON.stringify(updateNameCategory),
+                        success: function(response) {
+                            $("#nameCategory").val('')// Reset form
+                            toastr.success(response);
+                            loadCategory();
+                            $('#confirmModal').hide();
+                        },
+                        error: function(response) {
+                            toastr.error(response);
+                        }
+                    });
+                });
+                cancelAction();
+            }
+        }
+
     });
 }

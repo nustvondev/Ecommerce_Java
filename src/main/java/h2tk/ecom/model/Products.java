@@ -46,21 +46,6 @@ public class Products {
         this.orderProduct = orderProduct;
     }
 
-    public Products(int id, String name, double price, String brand, String image, Date createdDate, Date updatedDate,
-            Categories category) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.brand = brand;
-        this.image = image;
-        this.createdDate = createdDate;
-        this.updatedDate = updatedDate;
-        this.category = category;
-    }
-
-    public Products() {
-    }
-
     public int getId() {
         return id;
     }
@@ -124,4 +109,6 @@ public class Products {
     public void setCategory(Categories category) {
         this.category = category;
     }
+
+
 }

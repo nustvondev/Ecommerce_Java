@@ -14,4 +14,9 @@ public class test {
     public String Index1(){
         return "content_page/ManageCategory";
     }
+
+    @GetMapping("/adminManageProduct")
+    public String product(){
+        return "content_page/ManageProduct";
+    }
 }
