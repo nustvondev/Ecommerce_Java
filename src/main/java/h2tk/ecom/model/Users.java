@@ -23,8 +23,9 @@ public class Users {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "gender")
-    private boolean gender;
+    @ManyToOne
+    @JoinColumn(name = "gender_id")
+    Genders genders;
 
     @Column(name = "address")
     private String address;
@@ -32,8 +33,9 @@ public class Users {
     @Column(name = "birthday")
     private Date birthday;
 
-    @Column(name = "active")
-    private Boolean isActive;
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    Status status;
 
     @Column(name = "token")
     private String token;
@@ -45,21 +47,18 @@ public class Users {
       inverseJoinColumns = @JoinColumn(name = "role_id"))
     Set<Roles> userRoles;
 
-    public Users() {
-    }
-
-    public Users(int id, String username, String password, String phoneNumber, boolean gender, String address,
-            Date birthday, Boolean isActive, String token,String name) {
+    public Users(int id, String name, String username, String password, String phoneNumber, Genders genders,
+            String address, Date birthday, Status status, String token) {
         this.id = id;
+        this.name = name;
         this.username = username;
         this.password = password;
         this.phoneNumber = phoneNumber;
-        this.gender = gender;
+        this.genders = genders;
         this.address = address;
         this.birthday = birthday;
-        this.isActive = isActive;
+        this.status = status;
         this.token = token;
-        this.name = name;
     }
 
     public int getId() {
@@ -68,6 +67,14 @@ public class Users {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUsername() {
@@ -94,12 +101,12 @@ public class Users {
         this.phoneNumber = phoneNumber;
     }
 
-    public boolean isGender() {
-        return gender;
+    public Genders getGenders() {
+        return genders;
     }
 
-    public void setGender(boolean gender) {
-        this.gender = gender;
+    public void setGenders(Genders genders) {
+        this.genders = genders;
     }
 
     public String getAddress() {
@@ -118,20 +125,12 @@ public class Users {
         this.birthday = birthday;
     }
 
-    public Set<Roles> getUserRoles() {
-        return userRoles;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setUserRoles(Set<Roles> userRoles) {
-        this.userRoles = userRoles;
-    }
-
-    public Boolean getActive() {
-        return isActive;
-    }
-
-    public void setActive(Boolean active) {
-        isActive = active;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public String getToken() {
@@ -142,11 +141,6 @@ public class Users {
         this.token = token;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public Users() {
     }
 }
