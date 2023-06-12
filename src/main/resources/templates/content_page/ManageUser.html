@@ -38,48 +38,61 @@
 <div class="row">
     <div class="col-sm-4">
         <div class="container">
-
-            <form id="frmProduct" name="frmProduct" enctype="multipart/form-data">
+            <form id="frmUser" name="frmUser">
                 <div class="form-group">
                     <label>Name</label>
-                    <input type="text" name="name" id="name" class="form-control" placeholder="Name" size="30px" required>
+                    <input type="text" name="name" id="name" class="form-control" placeholder="Name" required>
                 </div>
-                <div class="form-group">
-                    <label>User Name</label>
-                    <input type="text" name="username" id="username" class="form-control" placeholder="User Name" size="30px" required>
+                <div class="form-row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>User Name</label>
+                            <input type="text" name="username" id="username" class="form-control" placeholder="User Name" required>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="text" name="password" id="password" class="form-control" placeholder="Password" size="30px" required>
+                <div class="form-row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="text" name="phonenumber" id="phonenumber" class="form-control" placeholder="Phone Number" required>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Birthday</label>
+                            <input type="text" name="birthday" id="birthday" class="form-control" placeholder="Birthday" required>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Phone Number</label>
-                    <input type="text" name="phonenumber" id="phonenumber" class="form-control" placeholder="Phone Number" size="30px" required>
-                </div>
-                <div class="form-group">
-                    <label>Address</label>
-                    <input type="text" name="address" id="address" class="form-control" placeholder="Address" size="30px" required>
-                </div>
-                <div class="form-group">
-                    <label>Gender</label>
-                    <select class="form-control">
-                        <option value="1">Male</option>
-                        <option value="0">Female</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Birthday</label>
-                    <input type="text" name="birthday" id="birthday" class="form-control" placeholder="Birthday" size="30px" required>
-                </div>
-                <div class="form-group">
-                    <label>Status</label>
-                    <select class="form-control">
-                        <option value="1">Active</option>
-                        <option value="0">inActive</option>
-                    </select>
+                <div class="form-row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Gender</label>
+                            <select class="form-control" name="gender">
+                                <option value="1">Male</option>
+                                <option value="0">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select class="form-control" name="status">
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group" align="right">
-                    <button type="submit" class="btn btn-info" id="save" >Add</button>
+                    <button type="submit" class="btn btn-info" id="save">Add</button>
                     <button type="button" class="btn btn-warning" id="reset">Reset</button>
                 </div>
             </form>
@@ -88,7 +101,8 @@
 
     <div class="col-sm-8">
         <div class="panel-body">
-            <table  class="table table-bordered" cellpadding="0" cellspacing="0" width="100%">
+            <table id="lst-product"  class="table table-bordered"
+                   cellpadding="0" cellspacing="0" width="100%">
                 <thead>
                 <tr style="text-align: center; background-color: yellow">
                     <th>ID </th>
@@ -103,7 +117,7 @@
                     <th>Action</th>
                 </tr>
                 </thead>
-                <tbody id="lst-product">
+                <tbody>
 
                 </tbody>
             </table>

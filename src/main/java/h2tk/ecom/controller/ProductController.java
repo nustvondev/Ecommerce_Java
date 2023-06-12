@@ -34,6 +34,10 @@ public class ProductController {
         return ProductRepo.findById(id);
     }
 
+    @GetMapping("/GetProductByCategory/{nameCategory}")
+    public List<Products> ProductbyCategory(@PathVariable String nameCategory){
+            return ProductRepo.findByCategoryName(nameCategory);
+    }
     @PostMapping("/saveProduct")
     public ResponseEntity<String> Addproduct(@RequestBody @ModelAttribute Products product,
                                              @RequestParam(required = false) MultipartFile imageProduct){

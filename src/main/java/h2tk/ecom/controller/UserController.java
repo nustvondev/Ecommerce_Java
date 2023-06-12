@@ -27,6 +27,11 @@ public class UserController {
         return UserRepo.findById(id);
     }
 
+//    @GetMapping("/GetUserByRole/{role}")
+//    public List<Users> GetUserByRole(@PathVariable String role){
+//        return UserRepo.getUsersByRole(role);
+//    }
+
     @PostMapping("/saveUser")
     public ResponseEntity<String> addUser(@ModelAttribute Users user){
         try {
