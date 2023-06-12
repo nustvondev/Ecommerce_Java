@@ -14,6 +14,12 @@ $(document).ready( ()=>{
     addUser();
     deleteUser();
     updateUser();
+
+    $('.gender').change(function() {
+        var selectedValue = $(this).val();
+        console.log(selectedValue);
+    });
+
 });
 
 function loadUser() {
@@ -36,11 +42,11 @@ function loadUser() {
                     "<td>" + user.birthday + "</td>" +
                     "<td>" + activeStatus + "</td>" +
                     "<td>" +
-                    '<button class="btn btn-warning delete-btn" data-toggle="modal" data-target="#confirmModal" data-id="' + user.id + '">Delete</button>' +
-                    '<button class="btn btn-primary update-btn"  data-id="' + user.id + '">Update</button>' +
+                    '<button class="btn btn-warning delete-btn" data-toggle="modal" data-target="#confirmModal" data-id="' + user.id + '"><i class="fa fa-trash"></i></button>' +
+                    '<button class="btn btn-primary update-btn"  data-id="' + user.id + '"><i class="fa fa-edit"></i></button>' +
                     "</td>" +
                     "</tr>";
-                $("#lst-product tbody").append(UserHTML);
+                $("#lst-user").append(UserHTML);
             });
         },
         error: function (){
@@ -49,7 +55,45 @@ function loadUser() {
     });
 }
 function addUser() {
+    $("#frmUser").submit(function (event) {
+        event.preventDefault();
+        let name =        $('#name').val();
+        let username =    $('#username').val();
+        let password =    $('#password').val();
+        let phoneNumber = $('#phonenumber').val();
+        let birthday =    $('#birthday').val();
+        let gender =      $('#gender').val();
+        let status =      $('#status').val();
 
+        let userData = {
+            name: name,
+            username: username,
+            password: password,
+            phoneNumber: phoneNumber,
+            birthday: birthday,
+            gender: gender,
+            status: status
+        };
+        $.ajax({
+            url: "/apiUser/saveUser",
+            method: "POST",
+            data: userData,
+            success: function (response){
+                toastr.success(response);
+                $('#name').val('');
+                $('#username').val('');
+                $('#password').val('');
+                $('#phonenumber').val('');
+                $('#birthday').val('');
+                $('#gender').prop("selectedIndex",0);
+                $('#status').prop("selectedIndex",0);
+                loadUser();
+            },
+            error: function (response){
+                toastr.error(response);
+            }
+        })
+    })
 }
 function deleteUser() {
 
