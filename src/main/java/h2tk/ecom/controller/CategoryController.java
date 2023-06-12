@@ -2,7 +2,6 @@ package h2tk.ecom.controller;
 
 import h2tk.ecom.model.Categories;
 import h2tk.ecom.repository.CategoryRepository;
-import h2tk.ecom.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

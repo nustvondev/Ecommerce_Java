@@ -19,4 +19,9 @@ public class test {
     public String product(){
         return "content_page/ManageProduct";
     }
+
+    @GetMapping("/adminManageUser")
+    public String User(){
+        return "content_page/ManageUser";
+    }
 }

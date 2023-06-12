@@ -12,7 +12,9 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "username")
+    @Column(name = "name")
+    private String name;
+    @Column(unique=true,name = "username")
     private String username;
 
     @Column(name = "password")
@@ -47,7 +49,7 @@ public class Users {
     }
 
     public Users(int id, String username, String password, String phoneNumber, boolean gender, String address,
-            Date birthday, Boolean isActive, String token) {
+            Date birthday, Boolean isActive, String token,String name) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -57,6 +59,7 @@ public class Users {
         this.birthday = birthday;
         this.isActive = isActive;
         this.token = token;
+        this.name = name;
     }
 
     public int getId() {
@@ -137,5 +140,13 @@ public class Users {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
