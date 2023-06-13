@@ -9,28 +9,60 @@ $(document).ready( ()=>{
         "timeOut": 5000,
         "extendedTimeOut": 1000
     }
-
+    loadGender();
+    loadStatus();
     loadUser();
     addUser();
     deleteUser();
     updateUser();
 
-    $('.gender').change(function() {
-        var selectedValue = $(this).val();
-        console.log(selectedValue);
-    });
 
 });
+
+function loadGender(){
+    $.get("/apiUser/ListGender",(data)=>{
+        $(".gender").empty();
+        $.each(data, (index, genders)=>{
+            let genderOption = '<option value="' + genders.id + '">' + genders.name + '</option>';
+            $(".gender").append(genderOption);
+        });
+    });
+
+    $.get("/apiUser/ListGender",(data)=>{
+        $(".gender1").empty();
+        $.each(data, (index, genders)=>{
+            let genderOption = '<option value="' + genders.id + '">' + genders.name + '</option>';
+            $(".gender1").append(genderOption);
+        });
+    });
+}
+
+function loadStatus(){
+    $.get("/apiUser/ListStatus",(data)=>{
+        $(".status").empty();
+        $.each(data, (index, status)=>{
+            let statusOption = '<option value="' + status.id + '">' + status.name + '</option>';
+            $(".status").append(statusOption);
+        });
+    });
+
+    $.get("/apiUser/ListStatus",(data)=>{
+        $(".status1").empty();
+        $.each(data, (index, status)=>{
+            let statusOption = '<option value="' + status.id + '">' + status.name + '</option>';
+            $(".status1").append(statusOption);
+        });
+    });
+}
+
 
 function loadUser() {
     $.ajax({
         url: "/apiUser/ListUser",
         method: "GET",
         success: function (users){
-            $("#lst-product tbody").empty();
+            $("#lst-user").empty();
             users.forEach(function(user) {
-                var activeStatus = user.active ? "Activated" : "Not Activated";
-                var genderStatus = user.gender ? "Male" : "Female"
                 let UserHTML = "<tr>" +
                     "<td>" + user.id + "</td>" +
                     "<td>" + user.name + "</td>" +
@@ -38,12 +70,12 @@ function loadUser() {
                     "<td>" + user.password + "</td>" +
                     "<td>" + user.phoneNumber + "</td>" +
                     "<td>" + user.address + "</td>" +
-                    "<td>" + genderStatus + "</td>" +
+                    "<td>" + user.genders.name + "</td>" +
                     "<td>" + user.birthday + "</td>" +
-                    "<td>" + activeStatus + "</td>" +
+                    "<td>" + user.status.name + "</td>" +
                     "<td>" +
                     '<button class="btn btn-warning delete-btn" data-toggle="modal" data-target="#confirmModal" data-id="' + user.id + '"><i class="fa fa-trash"></i></button>' +
-                    '<button class="btn btn-primary update-btn"  data-id="' + user.id + '"><i class="fa fa-edit"></i></button>' +
+                    '<button class="btn btn-primary update-btn" data-toggle="modal" data-target="#userModal" data-id="' + user.id + '"><i class="fa fa-edit"></i></button>' +
                     "</td>" +
                     "</tr>";
                 $("#lst-user").append(UserHTML);
@@ -62,8 +94,9 @@ function addUser() {
         let password =    $('#password').val();
         let phoneNumber = $('#phonenumber').val();
         let birthday =    $('#birthday').val();
-        let gender =      $('#gender').val();
-        let status =      $('#status').val();
+        let gender =      $('.gender').val();
+        let status =      $('.status').val();
+        let address =     $('#address').val();
 
         let userData = {
             name: name,
@@ -71,8 +104,9 @@ function addUser() {
             password: password,
             phoneNumber: phoneNumber,
             birthday: birthday,
-            gender: gender,
-            status: status
+            genders: gender,
+            status: status,
+            address: address
         };
         $.ajax({
             url: "/apiUser/saveUser",
@@ -85,8 +119,9 @@ function addUser() {
                 $('#password').val('');
                 $('#phonenumber').val('');
                 $('#birthday').val('');
-                $('#gender').prop("selectedIndex",0);
-                $('#status').prop("selectedIndex",0);
+                $('#address').val('');
+                $('.gender').prop("selectedIndex",0);
+                $('.status').prop("selectedIndex",0);
                 loadUser();
             },
             error: function (response){
@@ -96,8 +131,77 @@ function addUser() {
     })
 }
 function deleteUser() {
+    $(document).on("click",".delete-btn",function () {
+        let UserId = $(this).attr('data-id');
+        $("#confirmAction").off().on("click",function () {
+            $.ajax({
+                url: "/apiUser/deleteUser/" + UserId,
+                method: "GET",
+                success: function (response) {
+                    toastr.success(response);
+                    loadUser();
+                },
+                error: function (response) {
+                    toastr.error(response);
+                }
+            });
 
+        });
+    });
 }
 function updateUser() {
+    $(document).on("click",".update-btn",function () {
+        let UserId = $(this).attr('data-id');
+        $.ajax({
+            url: "/apiUser/GetUserById/"+UserId,
+            method: "GET",
+            success: function (user) {
+                $('#name1').val(user.name);
+                $('#username1').val(user.username);
+                $('#password1').val(user.password);
+                $('#phonenumber1').val(user.phoneNumber);
+                $('#birthday1').val(user.birthday);
+                $('.gender1').val(user.genders.id).prop("selected", true);
+                $('.status1').val(user.status.id).prop("selected", true);
+                $('#address1').val(user.address)
+            },
+            error: function (){
+                alert("error");
+            },
+        });
 
+        $("#update").off().on("click",function () {
+            let name1 =        $('#name1').val();
+            let username1 =    $('#username1').val();
+            let password1 =    $('#password1').val();
+            let phoneNumber1 = $('#phonenumber1').val();
+            let birthday1 =    $('#birthday1').val();
+            let gender1 =      $('.gender1').val();
+            let status1 =      $('.status1').val();
+            let address1 =     $('#address1').val();
+            let userData = {
+                name: name1,
+                username: username1,
+                password: password1,
+                phoneNumber: phoneNumber1,
+                birthday: birthday1,
+                genders: gender1,
+                status: status1,
+                address: address1
+            };
+            $.ajax({
+                url: "/apiUser/updateUser/"+UserId,
+                method: "PUT",
+                data: userData,
+                success: function (response) {
+                    toastr.success(response);
+                    loadUser();
+                },
+                error: function (response) {
+                    toastr.error(response);
+                }
+            });
+        });
+
+    });
 }

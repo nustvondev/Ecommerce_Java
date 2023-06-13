@@ -1,6 +1,10 @@
 package h2tk.ecom.controller;
 
+import h2tk.ecom.model.Genders;
+import h2tk.ecom.model.Status;
 import h2tk.ecom.model.Users;
+import h2tk.ecom.repository.GendersRepository;
+import h2tk.ecom.repository.StatusRepository;
 import h2tk.ecom.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,9 +21,26 @@ public class UserController {
     @Autowired
     private UserRepository UserRepo;
 
+    @Autowired
+    private GendersRepository GenderRepo;
+
+    @Autowired
+    private StatusRepository StatusRepo;
+
+
     @GetMapping("/ListUser")
     public List<Users> GetAllUser(){
         return UserRepo.findAll();
+    }
+
+    @GetMapping("/ListGender")
+    public List<Genders> GetAllGender(){
+        return GenderRepo.findAll();
+    }
+
+    @GetMapping("/ListStatus")
+    public List<Status> GetAllStatus(){
+        return StatusRepo.findAll();
     }
 
     @GetMapping("/GetUserById/{id}")
@@ -64,9 +85,9 @@ public class UserController {
                 exitUser.setName(user.getName());
                 exitUser.setAddress(user.getAddress());
                 exitUser.setPassword(user.getPassword());
-                exitUser.setGender(user.isGender());
+                exitUser.setGenders(user.getGenders());
                 exitUser.setBirthday(user.getBirthday());
-                exitUser.setActive(user.getActive());
+                exitUser.setStatus(user.getStatus());
                 exitUser.setPhoneNumber(user.getPhoneNumber());
                 UserRepo.save(exitUser);
                 return ResponseEntity.ok("Update User Successfully");

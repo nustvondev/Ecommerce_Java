@@ -24,6 +24,14 @@ function loadCategories () {
             $(".lst-categories").append(categoryOption);
         });
     });
+
+    $.get("/apiCategories/ListCategory",(data)=>{
+        $(".lst-categories1").empty();
+        $.each(data, (index, category)=>{
+            let categoryOption = '<option value="' + category.id + '">' + category.name + '</option>';
+            $(".lst-categories1").append(categoryOption);
+        });
+    });
 }
 
 function loadProducts(){
@@ -125,7 +133,7 @@ function updateProduct() {
                $("#nameProduct1").val(product.name);
                $("#Brand1").val(product.brand);
                $("#Price1").val(product.price);
-               $(".lst-categories").val(product.category.id).prop("selected", true);
+               $(".lst-categories1").val(product.category.id).prop("selected", true);
            },
             error: function () {
                 alert("error");
@@ -139,7 +147,7 @@ function updateProduct() {
             formData.append("brand", $("#Brand1").val());
             formData.append("price", $("#Price1").val());
             formData.append("imageProduct", $("#imageProduct1")[0].files[0]);
-            formData.append("category", $(".lst-categories").val());
+            formData.append("category", $(".lst-categories1").val());
             $.ajax({
                 url: "/apiProduct/updateProduct/" + productId,
                 method: "PUT",
