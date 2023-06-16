@@ -10,8 +10,13 @@ public class test {
         return "content_page/index";
     }
 
-    @GetMapping("/admin")
+    @GetMapping("/1")
     public String Index1(){
+        return "layout/_adminLayout";
+    }
+
+    @GetMapping("/admin")
+    public String Category(){
         return "content_page/ManageCategory";
     }
 

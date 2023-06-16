@@ -2,6 +2,7 @@ package h2tk.ecom.controller;
 
 import h2tk.ecom.model.Products;
 import h2tk.ecom.repository.ProductRepository;
+import h2tk.ecom.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
@@ -24,14 +25,17 @@ public class ProductController {
     @Autowired
     private ProductRepository ProductRepo;
 
+    @Autowired
+    private ProductService productService;
+
     @GetMapping("/ListProduct")
     public List<Products> listAll() {
-        return ProductRepo.findAll();
+        return productService.listAll();
     }
 
     @GetMapping("/GetProductById/{id}")
-    public Optional<Products> productbyId(@PathVariable int id){
-        return ProductRepo.findById(id);
+    public Products productbyId(@PathVariable int id){
+        return productService.get(id);
     }
 
     @GetMapping("/GetProductByCategory/{nameCategory}")
@@ -53,14 +57,14 @@ public class ProductController {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add product");
             }
         }
-        ProductRepo.save(product);
+        productService.save(product);
         return ResponseEntity.ok("Product added successfully");
     }
 
     @GetMapping("/deleteProduct/{id}")
     public ResponseEntity<String> delete(@PathVariable int id){
         try {
-            ProductRepo.deleteById(id);
+            productService.delete(id);
             return ResponseEntity.ok("Product deleted successfully");
         }catch (Exception ex){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete product");
@@ -90,8 +94,7 @@ public class ProductController {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update product");
             }
         }
-
-        ProductRepo.save(existingProduct);
+        productService.save(existingProduct);
         return ResponseEntity.ok("Product updated successfully");
     }
 
