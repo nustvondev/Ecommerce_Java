@@ -10,6 +10,7 @@ $(document).ready( ()=>{
         "extendedTimeOut": 1000
     }
     loadGender();
+    loadRole();
     loadStatus();
     loadUser();
     addUser();
@@ -55,6 +56,24 @@ function loadStatus(){
     });
 }
 
+function loadRole(){
+    $.get("/apiRole/ListRole",(data)=>{
+        $(".role").empty();
+        $.each(data, (index, role)=>{
+            let roleOption = '<option value="' + role.id + '">' + role.name + '</option>';
+            $(".role").append(roleOption);
+        });
+    });
+
+    $.get("/apiRole/ListRole",(data)=>{
+        $(".role1").empty();
+        $.each(data, (index, role)=>{
+            let roleOption = '<option value="' + role.id + '">' + role.name + '</option>';
+            $(".role1").append(roleOption);
+        });
+    });
+}
+
 
 function loadUser() {
     $.ajax({
@@ -73,6 +92,7 @@ function loadUser() {
                     "<td>" + user.genders.name + "</td>" +
                     "<td>" + user.birthday + "</td>" +
                     "<td>" + user.status.name + "</td>" +
+                    "<td>" + user.role.name + "</td>" +
                     "<td>" +
                     '<button class="btn btn-warning delete-btn" data-toggle="modal" data-target="#confirmModal" data-id="' + user.id + '"><i class="fa fa-trash"></i></button>' +
                     '<button class="btn btn-primary update-btn" data-toggle="modal" data-target="#userModal" data-id="' + user.id + '"><i class="fa fa-edit"></i></button>' +
@@ -97,7 +117,7 @@ function addUser() {
         let gender =      $('.gender').val();
         let status =      $('.status').val();
         let address =     $('#address').val();
-
+        let role = $('.role').val();
         let userData = {
             name: name,
             username: username,
@@ -106,7 +126,8 @@ function addUser() {
             birthday: birthday,
             genders: gender,
             status: status,
-            address: address
+            address: address,
+            role : role,
         };
         $.ajax({
             url: "/apiUser/saveUser",
@@ -122,6 +143,7 @@ function addUser() {
                 $('#address').val('');
                 $('.gender').prop("selectedIndex",0);
                 $('.status').prop("selectedIndex",0);
+                $('.role').prop("selectedIndex",0);
                 loadUser();
             },
             error: function (response){
@@ -163,7 +185,8 @@ function updateUser() {
                 $('#birthday1').val(user.birthday);
                 $('.gender1').val(user.genders.id).prop("selected", true);
                 $('.status1').val(user.status.id).prop("selected", true);
-                $('#address1').val(user.address)
+                $('#address1').val(user.address);
+                $('.role1').val(user.role.id).prop("selected", true);
             },
             error: function (){
                 alert("error");
@@ -179,6 +202,7 @@ function updateUser() {
             let gender1 =      $('.gender1').val();
             let status1 =      $('.status1').val();
             let address1 =     $('#address1').val();
+            let role1 =        $('.role1').val();
             let userData = {
                 name: name1,
                 username: username1,
@@ -187,7 +211,8 @@ function updateUser() {
                 birthday: birthday1,
                 genders: gender1,
                 status: status1,
-                address: address1
+                address: address1,
+                role: role1
             };
             $.ajax({
                 url: "/apiUser/updateUser/"+UserId,

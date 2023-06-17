@@ -37,15 +37,21 @@ public class Users {
     @JoinColumn(name = "status_id")
     Status status;
 
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    Roles role;
+
+    public Roles getRole() {
+        return role;
+    }
+
+    public void setRole(Roles role) {
+        this.role = role;
+    }
+
     @Column(name = "token")
     private String token;
 
-    @ManyToMany
-    @JoinTable(
-      name = "User_Role", 
-      joinColumns = @JoinColumn(name = "user_id"), 
-      inverseJoinColumns = @JoinColumn(name = "role_id"))
-    Set<Roles> userRoles;
 
     public Users(int id, String name, String username, String password, String phoneNumber, Genders genders,
             String address, Date birthday, Status status, String token) {

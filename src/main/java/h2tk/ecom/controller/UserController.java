@@ -1,14 +1,11 @@
 package h2tk.ecom.controller;
 
-import h2tk.ecom.model.Genders;
-import h2tk.ecom.model.Status;
-import h2tk.ecom.model.Users;
+import h2tk.ecom.model.*;
 import h2tk.ecom.repository.GendersRepository;
 import h2tk.ecom.repository.StatusRepository;
 import h2tk.ecom.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +23,6 @@ public class UserController {
 
     @Autowired
     private StatusRepository StatusRepo;
-
 
     @GetMapping("/ListUser")
     public List<Users> GetAllUser(){
@@ -89,6 +85,7 @@ public class UserController {
                 exitUser.setBirthday(user.getBirthday());
                 exitUser.setStatus(user.getStatus());
                 exitUser.setPhoneNumber(user.getPhoneNumber());
+                exitUser.setRole(user.getRole());
                 UserRepo.save(exitUser);
                 return ResponseEntity.ok("Update User Successfully");
             }else{

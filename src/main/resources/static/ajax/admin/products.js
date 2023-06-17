@@ -43,7 +43,7 @@ function loadProducts(){
                 '<td>' + products.name + '</td>' +
                 '<td>' + products.price + '</td>' +
                 '<td>' + products.brand + '</td>' +
-                '<td><img src="/images/' + products.image + '" style="width: 100px; height: 100px;"></td>'+
+                '<td><img src="/images/'+ products.image+'" style="width: 100px; height: 100px;"></td>'+
                 '<td>' + products.createdDate + '</td>' +
                 '<td>' + products.updatedDate + '</td>' +
                 '<td>' + products.category.name + '</td>' +
