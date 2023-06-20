@@ -32,7 +32,6 @@ public class ShoppingCartController {
                     break;
                 }
             }
-
             if (!productExists) {
                 Cart item = new Cart();
                 item.setProductId(product.getId());
@@ -46,6 +45,20 @@ public class ShoppingCartController {
             return ResponseEntity.status(HttpStatus.CREATED).body("Product added to cart successfully!");
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Product added to cart failed!");
+    }
+
+    @PostMapping("/update/{productId}")
+    public ResponseEntity<String> updateCart(@PathVariable int productId,
+                                             @RequestParam int quantity,
+                                             HttpSession session) {
+        List<Cart> cartItems = getOrCreateCart(session);
+        for (Cart item : cartItems) {
+            if (item.getProductId() == productId) {
+                item.setQuantity(quantity);
+                return ResponseEntity.ok("Cart item quantity updated successfully!");
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found in cart!");
     }
 
     @GetMapping("/view")
@@ -63,5 +76,24 @@ public class ShoppingCartController {
         }
         return cartItems;
     }
-    
+
+    @PostMapping("/remove/{productId}")
+    public ResponseEntity<String> removeOneItem(@PathVariable int productId, HttpSession session) {
+        List<Cart> cartItems = getOrCreateCart(session);
+        Iterator<Cart> iterator = cartItems.iterator();
+        while (iterator.hasNext()) {
+            Cart item = iterator.next();
+            if (item.getProductId() == productId) {
+                iterator.remove();
+                return ResponseEntity.ok("Product removed from cart successfully!");
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found in cart!");
+    }
+
+    @PostMapping("/clearAll")
+    public ResponseEntity<String> clearCart(HttpSession session) {
+        session.removeAttribute("cart");
+        return ResponseEntity.ok("Cart cleared successfully!");
+    }
 }
