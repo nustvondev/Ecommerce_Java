@@ -29,4 +29,9 @@ public class test {
     public String User(){
         return "content_page/ManageUser";
     }
+
+    @GetMapping("/login")
+    public String UserLogin(){
+        return "content_page/login_signup";
+    }
 }

@@ -30,6 +30,9 @@ public class Users {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "birthday")
     private Date birthday;
 
@@ -51,21 +54,6 @@ public class Users {
 
     @Column(name = "token")
     private String token;
-
-
-    public Users(int id, String name, String username, String password, String phoneNumber, Genders genders,
-            String address, Date birthday, Status status, String token) {
-        this.id = id;
-        this.name = name;
-        this.username = username;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.genders = genders;
-        this.address = address;
-        this.birthday = birthday;
-        this.status = status;
-        this.token = token;
-    }
 
     public int getId() {
         return id;
@@ -148,5 +136,28 @@ public class Users {
     }
 
     public Users() {
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Users(int id, String name, String username, String password, String phoneNumber, Genders genders, String address, String email, Date birthday, Status status, Roles role, String token) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.genders = genders;
+        this.address = address;
+        this.email = email;
+        this.birthday = birthday;
+        this.status = status;
+        this.role = role;
+        this.token = token;
     }
 }

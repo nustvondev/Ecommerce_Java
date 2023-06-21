@@ -18,6 +18,20 @@ public class ShoppingCartController {
     @Autowired
     private ProductService productService;
 
+    @SuppressWarnings("unchecked")
+    private List<Cart> getOrCreateCart(HttpSession session) {
+        List<Cart> cartItems = (List<Cart>) session.getAttribute("cart");
+        if (cartItems == null) {
+            cartItems = new ArrayList<>();
+            session.setAttribute("cart", cartItems);
+        }
+        return cartItems;
+    }
+    @GetMapping("/view")
+    public ResponseEntity<List<Cart>> viewCart(HttpSession session) {
+        List<Cart> cartItems = getOrCreateCart(session);
+        return ResponseEntity.ok(cartItems);
+    }
     @PostMapping("/add/{productId}")
     public ResponseEntity<String> addToCart(@PathVariable("productId") int productId, HttpSession session) {
         List<Cart> cartItems = getOrCreateCart(session);
@@ -61,21 +75,7 @@ public class ShoppingCartController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found in cart!");
     }
 
-    @GetMapping("/view")
-    public ResponseEntity<List<Cart>> viewCart(HttpSession session) {
-        List<Cart> cartItems = getOrCreateCart(session);
-        return ResponseEntity.ok(cartItems);
-    }
 
-    @SuppressWarnings("unchecked")
-    private List<Cart> getOrCreateCart(HttpSession session) {
-        List<Cart> cartItems = (List<Cart>) session.getAttribute("cart");
-        if (cartItems == null) {
-            cartItems = new ArrayList<>();
-            session.setAttribute("cart", cartItems);
-        }
-        return cartItems;
-    }
 
     @PostMapping("/remove/{productId}")
     public ResponseEntity<String> removeOneItem(@PathVariable int productId, HttpSession session) {
