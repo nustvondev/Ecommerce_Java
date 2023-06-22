@@ -11,3 +11,18 @@
     cursor: pointer;
     color: #fd7e14;
 }
+
+#loginPage:hover{
+    cursor: pointer;
+    color: #fd7e14;
+}
+
+.clearAll{
+    cursor: pointer;
+    color: #fd7e14;
+}
+@media (min-width: 1025px) {
+    .h-custom {
+        height: 100vh !important;
+    }
+}

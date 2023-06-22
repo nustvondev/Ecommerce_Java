@@ -18,7 +18,6 @@ public class ShoppingCartController {
     @Autowired
     private ProductService productService;
 
-    @SuppressWarnings("unchecked")
     private List<Cart> getOrCreateCart(HttpSession session) {
         List<Cart> cartItems = (List<Cart>) session.getAttribute("cart");
         if (cartItems == null) {
@@ -33,14 +32,14 @@ public class ShoppingCartController {
         return ResponseEntity.ok(cartItems);
     }
     @PostMapping("/add/{productId}")
-    public ResponseEntity<String> addToCart(@PathVariable("productId") int productId, HttpSession session) {
-        List<Cart> cartItems = getOrCreateCart(session);
+                public ResponseEntity<String> addToCart(@PathVariable("productId") int productId, HttpSession session) {
+                    List<Cart> cartItems = getOrCreateCart(session);
 
-        Products product = productService.get(productId);
-        if (product != null && product.getId() == productId) {
-            boolean productExists = false;
-            for (Cart item : cartItems) {
-                if (item.getProductId() == productId) {
+                    Products product = productService.get(productId);
+                    if (product != null && product.getId() == productId) {
+                        boolean productExists = false;
+                        for (Cart item : cartItems) {
+                            if (item.getProductId() == productId) {
                     item.setQuantity(item.getQuantity() + 1);
                     productExists = true;
                     break;
@@ -56,7 +55,7 @@ public class ShoppingCartController {
                 cartItems.add(item);
             }
             session.setAttribute("cart", cartItems);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Product added to cart successfully!");
+            return ResponseEntity.ok("Product added to cart successfully!");
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Product added to cart failed!");
     }
@@ -95,5 +94,25 @@ public class ShoppingCartController {
     public ResponseEntity<String> clearCart(HttpSession session) {
         session.removeAttribute("cart");
         return ResponseEntity.ok("Cart cleared successfully!");
+    }
+
+    @GetMapping("/totalQuantity")
+    public ResponseEntity<Integer> getTotalQuantity(HttpSession session) {
+        List<Cart> cartItems = getOrCreateCart(session);
+        int totalQuantity = 0;
+        for (Cart item : cartItems) {
+            totalQuantity += item.getQuantity();
+        }
+        return ResponseEntity.ok(totalQuantity);
+    }
+
+    @GetMapping("/totalAmount")
+    public ResponseEntity<Double> getTotalAmount(HttpSession session) {
+        List<Cart> cartItems = getOrCreateCart(session);
+        double totalAmount = 0;
+        for (Cart item : cartItems) {
+            totalAmount += item.getQuantity() * item.getPrice();
+        }
+        return ResponseEntity.ok(totalAmount);
     }
 }

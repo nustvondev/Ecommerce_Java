@@ -6,12 +6,15 @@ $(document).ready(()=>{
         "onclick": null,
         "fadeIn": 300,
         "fadeOut": 1000,
-        "timeOut": 10000,
+        "timeOut": 3000,
         "extendedTimeOut": 1000
     }
 
     loadProduct();
     RedirectshowCart();
+    RedirectLogin();
+    addToCart();
+    totalQuantity();
 });
 
 function loadProduct(){
@@ -76,6 +79,43 @@ function RedirectshowCart(){
     $("#shoppingCart").on("click",function (){
         const url = "/showCart";
         window.location.href = url;
+    });
+}
+
+function RedirectLogin(){
+    $("#loginPage").on("click",function (){
+        const url = "/login";
+        window.location.href = url;
+    });
+}
+
+function addToCart() {
+    $(document).off().on("click",".cart-btn", function () {
+        var productId = $(this).attr('data-id');
+
+        $.ajax({
+            url: "/cart/add/" + productId,
+            method: "POST",
+            success: function(response) {
+                totalQuantity();
+                toastr.success(response);
+            },
+            error: function(xhr, status, error) {
+                toastr.error(xhr.responseText);
+            }
+        });
+    })
+}
+
+function totalQuantity(){
+    $("#quantity").empty();
+    $.ajax({
+        url: "/cart/totalQuantity",
+        method: "GET",
+        success: function (data) {
+            let totalQuantity = data;
+            $("#quantity").append(" ( "+totalQuantity +" )");
+        }
     });
 }
 
