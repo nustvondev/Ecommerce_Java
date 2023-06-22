@@ -24,7 +24,8 @@ public class Products {
 
     @Column(name = "image")
     private String image;
-
+    @Column(name = "decription")
+    private String decription;
     @Column(name = "created_date")
     private Date createdDate;
 
@@ -60,6 +61,14 @@ public class Products {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDecription() {
+        return decription;
+    }
+
+    public void setDecription(String decription) {
+        this.decription = decription;
     }
 
     public double getPrice() {

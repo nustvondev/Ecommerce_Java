@@ -21,6 +21,11 @@
     cursor: pointer;
     color: #fd7e14;
 }
+
+.back {
+    cursor: pointer;
+    color: #fd7e14;
+}
 @media (min-width: 1025px) {
     .h-custom {
         height: 100vh !important;

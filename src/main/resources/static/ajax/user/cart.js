@@ -13,7 +13,15 @@ $(document).ready(function() {
     totalAmount();
     clearOneItem();
     clearAllItem();
+    backHomePage();
 });
+
+function backHomePage() {
+    $(".back").on("click",function () {
+        const url = "/";
+        window.location.href = url;
+    });
+}
 
 function loadCartItems() {
     $.ajax({
