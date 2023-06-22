@@ -1,5 +1,6 @@
 package h2tk.ecom.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -16,7 +17,7 @@ public class test {
     }
 
     @GetMapping("/admin")
-    public String Category(){
+    public String Category(HttpSession session){
         return "content_page/ManageCategory";
     }
 
@@ -33,5 +34,10 @@ public class test {
     @GetMapping("/login")
     public String UserLogin(){
         return "content_page/login_signup";
+    }
+
+    @GetMapping("/showCart")
+    public String cart(){
+        return "content_page/showCart";
     }
 }

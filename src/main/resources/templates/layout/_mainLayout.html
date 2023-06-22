@@ -18,24 +18,23 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <!-- style css -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" href="/css/userCSS.css">
     <!-- Responsive-->
     <link rel="stylesheet" href="css/responsive.css">
     <!-- fevicon -->
     <link rel="icon" href="images/fevicon.png" type="image/gif" />
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
-    <!-- Tweaks for older IEs-->
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
-    <!-- fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
-    <!-- font awesome -->
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!--  -->
+
     <!-- owl stylesheets -->
-    <link href="https://fonts.googleapis.com/css?family=Great+Vibes|Poppins:400,700&display=swap&subset=latin-ext" rel="stylesheet">
     <link rel="stylesheet" href="css/owl.carousel.min.css">
     <link rel="stylesoeet" href="css/owl.theme.default.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.6.0/pagination.min.js" integrity="sha512-GzbaI5EsNzdEUq6/2XLYpr1y9CUZRIVsUeWTAFgULtQa5jZ3Nug8i0nZKM6jp9NffBCZhymPPQFcF0DK+JkRpw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.6.0/pagination.css" integrity="sha512-TH+vnrhByFI2RzNvaHSqt6EwoJ9Bp+yGAGTWp84qTuTx315ebnypxtyGHpli55Rm4N4J+N/0W9xAL2b5RZ2ZSA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 <!-- banner bg main start -->
@@ -116,13 +115,13 @@
                     </div>
                     <div class="login_menu">
                         <ul>
-                            <li><a href="#">
+                            <li><a id="shoppingCart">
                                 <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                <span class="padding_10">Cart</span></a>
+                                <span class="padding_10">Cart<span id="quantity">(1)</span></span></a>
                             </li>
                             <li><a href="#">
                                 <i class="fa fa-user" aria-hidden="true"></i>
-                                <span class="padding_10">Cart</span></a>
+                                <span class="padding_10">login</span></a>
                             </li>
                         </ul>
                     </div>
@@ -206,14 +205,6 @@
       </div>
       <!-- copyright section end -->
       <!-- Javascript files-->
-      <script src="js/jquery.min.js"></script>
-      <script src="js/popper.min.js"></script>
-      <script src="js/bootstrap.bundle.min.js"></script>
-      <script src="js/jquery-3.0.0.min.js"></script>
-      <script src="js/plugin.js"></script>
-      <!-- sidebar -->
-      <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-      <script src="js/custom.js"></script>
       <script>
           function openNav() {
               document.getElementById("mySidenav").style.width = "250px";
@@ -223,5 +214,7 @@
               document.getElementById("mySidenav").style.width = "0";
           }
       </script>
+    <script src="ajax/user/homePage.js"></script>
+    <script src="ajax/user/cart.js"></script>
 </body>
 </html>
