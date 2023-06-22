@@ -4,6 +4,7 @@ import h2tk.ecom.model.*;
 import h2tk.ecom.repository.GendersRepository;
 import h2tk.ecom.repository.StatusRepository;
 import h2tk.ecom.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -113,4 +114,31 @@ public class UserController {
         }
     }
 
+    @PostMapping("/userLogin")
+    public ResponseEntity<String> login(@RequestParam String userName,
+                                        @RequestParam String password,
+                                        HttpSession session
+                                        ){
+        try{
+            Users exitUser = UserRepo.findByUsername(userName);
+            if(exitUser != null  && exitUser.getPassword().equals(password)){
+                if(  exitUser.getStatus().getId() == 1){
+                    session.setAttribute("user", exitUser);
+                    return ResponseEntity.ok("Login Success");
+                }else{
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("This account wasn't Activated");
+                }
+
+            }else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Wrong user name or password");
+            }
+        }catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Login Failed");
+        }
+    }
+    @GetMapping("/GetSessionUser")
+    public Users getSessionUser(HttpSession session){
+        Users user = (Users) session.getAttribute("user");
+        return user;
+    }
 }

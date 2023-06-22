@@ -12,6 +12,7 @@ $(document).ready(()=>{
 
     loadGender();
     register();
+    login();
 
 });
 
@@ -68,5 +69,27 @@ function register(){
                 toastr.error("Register Failed");
             }
         })
+    })
+}
+
+function login() {
+    const url = "/";
+    $("#NameUser").empty();
+    $("#login").submit(function (event) {
+        event.preventDefault(); // Ngăn chặn hành vi mặc định của form
+
+        let userName = $("#usernameli").val();
+        let password = $("#passwordli").val();
+        $.ajax({
+            url: "/apiUser/userLogin?userName=" + userName + "&password=" + password,
+            method: "POST",
+            success: function (response) {
+                window.location.href = url;
+                toastr.success(response);
+            },
+            error: function (response) {
+                toastr.error(response);
+            }
+        });
     })
 }

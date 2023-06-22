@@ -1,7 +1,9 @@
 package h2tk.ecom.controller;
 
 import h2tk.ecom.model.Categories;
+import h2tk.ecom.model.Users;
 import h2tk.ecom.repository.CategoryRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +18,14 @@ public class CategoryController {
     @Autowired
     private CategoryRepository CateRepo;
 
+    public Users getUserBySession(HttpSession session){
+        Users users = (Users) session.getAttribute("user");
+        return users;
+    }
+
     @GetMapping("/ListCategory")
-    public List<Categories> listAll() {
+    public List<Categories> listAll(HttpSession session) {
+        Users users = getUserBySession(session);
         return CateRepo.findAll();
     }
 

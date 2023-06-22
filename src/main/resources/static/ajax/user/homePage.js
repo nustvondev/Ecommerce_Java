@@ -15,6 +15,7 @@ $(document).ready(()=>{
     RedirectLogin();
     addToCart();
     totalQuantity();
+    // inforUserLogin();
 });
 
 function loadProduct(){
@@ -118,5 +119,21 @@ function totalQuantity(){
         }
     });
 }
+
+function inforUserLogin(){
+    $("#NameUser").empty();
+    $.ajax({
+        url: "/apiUser/GetSessionUser",
+        method: "GET",
+        success: function (data) {
+            let name = data.name;
+            $("#NameUser").append(name);
+            $("#loginPage").hide();
+        }
+    });
+}
+
+
+
 
 
