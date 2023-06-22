@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/apiUser")
@@ -23,8 +24,16 @@ public class UserController {
     @Autowired
     private GendersRepository GenderRepo;
 
+
+
     @Autowired
     private StatusRepository StatusRepo;
+
+//    private final EmailService emailService;
+//    @Autowired
+//    public UserController(EmailService emailService) {
+//        this.emailService = emailService;
+//    }
 
     @GetMapping("/ListUser")
     public List<Users> GetAllUser(){
@@ -57,6 +66,12 @@ public class UserController {
             if(UserRepo.findByUsername(user.getUsername()) != null){
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("UserName already exit");
             }else{
+//                UUID uuid = UUID.randomUUID();
+//                String token = uuid.toString();
+//                user.setToken(token);
+//                String subject = "Notification";
+//                String text = "This is a notification email.";
+//                emailService.sendEmail(user.getEmail(), subject, text);
                 UserRepo.save(user);
                 return ResponseEntity.ok("Add A User Successfully");
             }
