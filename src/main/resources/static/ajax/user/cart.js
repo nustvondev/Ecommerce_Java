@@ -14,6 +14,7 @@ $(document).ready(function() {
     clearOneItem();
     clearAllItem();
     backHomePage();
+    changeQuantity();
 });
 
 function backHomePage() {
@@ -34,13 +35,11 @@ function loadCartItems() {
                 var row = "<tr>" +
                     "<td>" + cartItem.productId + "</td>" +
                     "<td>" + cartItem.name + "</td>" +
-                    '<td><img src="/images/'+ cartItem.image+'" style="width: 100px; height: 100px;"></td>'+
-                    "<td>" + cartItem.quantity + "</td>" +
+                    '<td><img src="/images/' + cartItem.image + '" style="width: 100px; height: 100px;"></td>' +
+                    '<td><input type="number" class="quantity-input" value="' + cartItem.quantity + '"></td>' +
                     "<td>" + cartItem.price + "</td>" +
-                    "<td>" + (cartItem.quantity * cartItem.price) + "</td>" +
-                    '<td> <div class="button-group">' +
-                    '<button class="btn btn-danger delete-btn" data-id="' + cartItem.productId + '">Delete</button>' +
-                    '</div></td>' +
+                    '<td class="total-price">' + (cartItem.quantity * cartItem.price) + "</td>" +
+                    '<td><button class="btn btn-danger delete-btn" data-id="' + cartItem.productId + '">Delete</button></td>' +
                     "</tr>";
                 $("#cartItems").append(row);
             });
@@ -83,14 +82,13 @@ function clearOneItem(){
 }
 
 function clearAllItem(){
-
     $(document).on("click",".clearAll",function () {
         $.ajax({
             url: "/cart/clearAll" ,
             method: "POST",
             success: function (response) {
-                loadCartItems();
                 toastr.success(response);
+                loadCartItems();
                 totalAmount()
             },
             error: function (response){
@@ -98,6 +96,32 @@ function clearAllItem(){
             }
         });
     })
+}
+
+function updateQuantity(productId, quantity){
+    $.ajax({
+        url: "/cart/update/" + productId,
+        type: "POST",
+        data: {
+            quantity: quantity
+        },
+        success: function(response) {
+            toastr.success(response);
+            loadCartItems();
+            totalAmount()
+        },
+        error: function(xhr, status, error) {
+            toastr.error(error);
+        }
+    });
+}
+
+function changeQuantity() {
+    $(document).on("change", ".quantity-input", function() {
+        var newQuantity = parseInt($(this).val());
+        var productId = $(this).closest("tr").find(".delete-btn").attr("data-id");
+        updateQuantity(productId, newQuantity);
+    });
 }
 
 

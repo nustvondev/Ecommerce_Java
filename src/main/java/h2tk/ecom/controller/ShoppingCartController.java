@@ -74,8 +74,6 @@ public class ShoppingCartController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found in cart!");
     }
 
-
-
     @PostMapping("/remove/{productId}")
     public ResponseEntity<String> removeOneItem(@PathVariable int productId, HttpSession session) {
         List<Cart> cartItems = getOrCreateCart(session);
