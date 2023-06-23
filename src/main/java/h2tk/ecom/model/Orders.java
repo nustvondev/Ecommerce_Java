@@ -13,7 +13,7 @@ public class Orders {
     private int id;
 
     @Column(name = "paid")
-    private double pain;
+    private boolean pain;
 
     @Column(name = "delivered")
     private boolean delivered;
@@ -34,7 +34,7 @@ public class Orders {
     public Orders() {
     }
 
-    public Orders(int id, double pain, boolean delivered, Date orderDate, Date deliveryDate, Users user) {
+    public Orders(int id, boolean pain, boolean delivered, Date orderDate, Date deliveryDate, Users user) {
         this.id = id;
         this.pain = pain;
         this.delivered = delivered;
@@ -59,11 +59,11 @@ public class Orders {
         this.id = id;
     }
 
-    public double getPain() {
+    public boolean isPain() {
         return pain;
     }
 
-    public void setPain(double pain) {
+    public void setPain(boolean pain) {
         this.pain = pain;
     }
 
