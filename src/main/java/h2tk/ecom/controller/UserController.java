@@ -141,4 +141,10 @@ public class UserController {
         Users user = (Users) session.getAttribute("user");
         return user;
     }
+
+    @PostMapping("/UserLogout")
+    public ResponseEntity<String> userLogout(HttpSession session){
+        session.removeAttribute("user");
+        return ResponseEntity.ok("Logout Success");
+    }
 }

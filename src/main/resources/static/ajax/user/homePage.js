@@ -15,7 +15,8 @@ $(document).ready(()=>{
     RedirectLogin();
     addToCart();
     totalQuantity();
-    // inforUserLogin();
+    inforUserLogin();
+    Userlogout();
 });
 
 function loadProduct(){
@@ -126,11 +127,39 @@ function inforUserLogin(){
         url: "/apiUser/GetSessionUser",
         method: "GET",
         success: function (data) {
-            let name = data.name;
-            $("#NameUser").append(name);
-            $("#loginPage").hide();
+            let name = data.name
+            if(name){
+                $("#NameUser").append(name);
+                $("#loginPage").hide();
+                $("#logoutPage").show();
+            } else{
+                $("#NameUser").append("");
+                $("#loginPage").show();
+                $("#logoutPage").hide();
+            }
+
+        },
+        error: function () {
+            alert("error");
         }
     });
+}
+
+function Userlogout() {
+    $(document).on("click","#logoutPage",function () {
+        $.ajax({
+            url: "/apiUser/UserLogout",
+            method: "POST",
+            success: function (response) {
+                const url = "/";
+                window.location.href = url;
+                toastr.success(response);
+            },
+            error: function () {
+                alert("Can't Logout");
+            }
+        })
+    })
 }
 
 
