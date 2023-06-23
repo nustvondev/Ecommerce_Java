@@ -4,11 +4,14 @@ import h2tk.ecom.model.*;
 import h2tk.ecom.repository.GendersRepository;
 import h2tk.ecom.repository.StatusRepository;
 import h2tk.ecom.repository.UserRepository;
+import h2tk.ecom.service.EmailService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.core.env.Environment;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,23 +21,25 @@ import java.util.UUID;
 @RequestMapping("/apiUser")
 public class UserController {
 
-
+    @Value("${localhost.url:http://localhost:8080}")
+    private String localhostUrl;
     @Autowired
     private UserRepository UserRepo;
 
     @Autowired
     private GendersRepository GenderRepo;
-
+    @Autowired
+    private Environment environment;
 
 
     @Autowired
     private StatusRepository StatusRepo;
 
-//    private final EmailService emailService;
-//    @Autowired
-//    public UserController(EmailService emailService) {
-//        this.emailService = emailService;
-//    }
+    private final EmailService emailService;
+    @Autowired
+    public UserController(EmailService emailService) {
+        this.emailService = emailService;
+    }
 
     @GetMapping("/ListUser")
     public List<Users> GetAllUser(){
@@ -67,12 +72,12 @@ public class UserController {
             if(UserRepo.findByUsername(user.getUsername()) != null){
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("UserName already exit");
             }else{
-//                UUID uuid = UUID.randomUUID();
-//                String token = uuid.toString();
-//                user.setToken(token);
-//                String subject = "Notification";
-//                String text = "This is a notification email.";
-//                emailService.sendEmail(user.getEmail(), subject, text);
+                UUID uuid = UUID.randomUUID();
+                String token = uuid.toString();
+                user.setToken(token);
+
+                String link= localhostUrl+"/verify-email?token="+token+"&email="+user.getEmail();
+                emailService.sendEmail(user.getEmail(), user.getName(), link);
                 UserRepo.save(user);
                 return ResponseEntity.ok("Add A User Successfully");
             }
@@ -146,5 +151,21 @@ public class UserController {
     public ResponseEntity<String> userLogout(HttpSession session){
         session.removeAttribute("user");
         return ResponseEntity.ok("Logout Success");
+    }
+    @GetMapping("/verify-email")
+    public String loadVerifyEmailPage(@RequestParam("token") String token, @RequestParam("email") String email) {
+        return "content_page/verify-email";
+    }
+    @PostMapping("/verify-email")
+    @ResponseBody
+    public ResponseEntity<String> verifyEmail(@RequestParam("token") String token, @RequestParam("email") String email) {
+        // Thực hiện xác thực email
+        boolean isEmailVerified = emailService.performEmailVerification(token, email);
+
+        if (isEmailVerified) {
+            return ResponseEntity.ok("Xác nhận email thành công!");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Email đã được xác nhận hoặc lỗi!");
+        }
     }
 }
