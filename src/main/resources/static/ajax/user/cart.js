@@ -15,6 +15,7 @@ $(document).ready(function() {
     clearAllItem();
     backHomePage();
     changeQuantity();
+    addOrder();
 });
 
 function backHomePage() {
@@ -121,6 +122,23 @@ function changeQuantity() {
         var newQuantity = parseInt($(this).val());
         var productId = $(this).closest("tr").find(".delete-btn").attr("data-id");
         updateQuantity(productId, newQuantity);
+    });
+}
+
+function addOrder() {
+    $(".order").on("click",function () {
+        $.ajax({
+            url: "/orderApi/orders",
+            method: "POST",
+            success: function (response) {
+                toastr.success(response);
+                loadCartItems();
+                totalAmount();
+            },
+            error: function (response) {
+                toastr.error(response);
+            }
+        });
     });
 }
 

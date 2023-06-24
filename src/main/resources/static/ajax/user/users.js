@@ -13,7 +13,9 @@ $(document).ready(()=>{
     loadGender();
     register();
     login();
-
+    setTimeout(function() {
+        $('#loading-icon').show();
+    }, 20000);
 });
 
 function loadGender(){
@@ -73,21 +75,38 @@ function register(){
 }
 
 function login() {
-    const url = "/";
+    const urlUser = "/";
+    const urlAdmin = "/admin";
     $("#NameUser").empty();
     $("#login").submit(function (event) {
-        event.preventDefault(); // Ngăn chặn hành vi mặc định của form
-
+        event.preventDefault();
+        $("#loading-icon").addClass("fa fa-spinner fa-spin");
         let userName = $("#usernameli").val();
         let password = $("#passwordli").val();
         $.ajax({
-            url: "/apiUser/userLogin?userName=" + userName + "&password=" + password,
+            url: "/apiUser/userLogin",
             method: "POST",
+            data: {
+                userName : userName,
+                password: password,
+            },
             success: function (response) {
-                window.location.href = url;
+                $("#loading-icon").removeClass("fa fa-spinner fa-spin");
+                $.ajax({
+                    url: "/apiUser/GetSessionUser",
+                    method: "GET",
+                    success: function (data) {
+                        if(data.role.id === 1){
+                            window.location.href = urlUser;
+                        }else if(data.role.id === 2){
+                            window.location.href = urlAdmin;
+                        }
+                    }
+                });
                 toastr.success(response);
             },
             error: function (response) {
+                $("#loading-icon").removeClass("fa fa-spinner fa-spin");
                 toastr.error(response);
             }
         });

@@ -3,6 +3,7 @@ package h2tk.ecom.model;
 import java.sql.Date;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -36,6 +37,7 @@ public class Products {
     @JoinColumn(name = "category_id")
     Categories category;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "product")
     Set<OrderProduct> orderProduct;
 
