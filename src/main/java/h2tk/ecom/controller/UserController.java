@@ -4,16 +4,20 @@ import h2tk.ecom.model.*;
 import h2tk.ecom.repository.GendersRepository;
 import h2tk.ecom.repository.StatusRepository;
 import h2tk.ecom.repository.UserRepository;
+import h2tk.ecom.service.EmailService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Controller
 @RestController
 @RequestMapping("/apiUser")
 public class UserController {
@@ -25,16 +29,17 @@ public class UserController {
     @Autowired
     private GendersRepository GenderRepo;
 
-
+    @Value("${localhost.url:http://localhost:8080}")
+    private String localhostUrl;
 
     @Autowired
     private StatusRepository StatusRepo;
 
-//    private final EmailService emailService;
-//    @Autowired
-//    public UserController(EmailService emailService) {
-//        this.emailService = emailService;
-//    }
+    private final EmailService emailService;
+    @Autowired
+    public UserController(EmailService emailService) {
+        this.emailService = emailService;
+    }
 
     @GetMapping("/ListUser")
     public List<Users> GetAllUser(){
@@ -56,23 +61,17 @@ public class UserController {
         return UserRepo.findById(id);
     }
 
-//    @GetMapping("/GetUserByRole/{role}")
-//    public List<Users> GetUserByRole(@PathVariable String role){
-//        return UserRepo.getUsersByRole(role);
-//    }
-
     @PostMapping("/saveUser")
     public ResponseEntity<String> addUser(@ModelAttribute Users user){
         try {
             if(UserRepo.findByUsername(user.getUsername()) != null){
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("UserName already exit");
             }else{
-//                UUID uuid = UUID.randomUUID();
-//                String token = uuid.toString();
-//                user.setToken(token);
-//                String subject = "Notification";
-//                String text = "This is a notification email.";
-//                emailService.sendEmail(user.getEmail(), subject, text);
+                UUID uuid = UUID.randomUUID();
+                String token = uuid.toString();
+                user.setToken(token);
+                String link= localhostUrl+"/verify-email?token="+token+"&email="+user.getEmail();
+                emailService.sendEmail(user.getEmail(), user.getName(), link);
                 UserRepo.save(user);
                 return ResponseEntity.ok("Add A User Successfully");
             }
@@ -80,6 +79,9 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Add A User Failed");
         }
     }
+
+
+
 
     @GetMapping("/deleteUser/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable int id){
