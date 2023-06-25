@@ -23,7 +23,6 @@ public class router {
     @Value("${localhost.url:http://localhost:8080}")
     private String localhostUrl;
 
-
     private final EmailService emailService;
     @Autowired
     public router(EmailService emailService) {
@@ -41,6 +40,8 @@ public class router {
         if(users != null){
             if(users.getRole().getId() == 2){
                 return "content_page/ManageCategory";
+            }else if(users.getRole().getId() == 1){
+                return "error/404";
             }
         }
         return "content_page/login_signup";
@@ -52,6 +53,8 @@ public class router {
         if(users != null){
             if(users.getRole().getId() == 2){
                 return "content_page/ManageProduct";
+            }else if(users.getRole().getId() == 1){
+                return "error/404";
             }
         }
         return "content_page/login_signup";
@@ -63,6 +66,8 @@ public class router {
         if(users != null){
             if(users.getRole().getId() == 2){
                 return "content_page/ManageUser";
+            }else if(users.getRole().getId() == 1){
+                return "error/404";
             }
         }
         return "content_page/login_signup";
@@ -74,8 +79,22 @@ public class router {
     }
 
     @GetMapping("/showCart")
-    public String cart(){
-        return "content_page/showCart";
+    public String cart(HttpSession session){
+        Users users = (Users) session.getAttribute("user");
+        if(users == null){
+            return "content_page/showCart";
+        }
+        if(users.getRole().getId() == 2){
+            return "error/404";
+        }else if (users.getRole().getId() == 1){
+            return "content_page/showCart";
+        }
+        return "error/404";
+    }
+
+    @GetMapping("/changePassword")
+    public String changePass(HttpSession session){
+        return "content_page/changePassword";
     }
 
     @GetMapping("/verify-email")

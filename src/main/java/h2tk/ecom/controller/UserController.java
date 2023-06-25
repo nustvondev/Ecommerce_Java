@@ -149,4 +149,23 @@ public class UserController {
         session.removeAttribute("user");
         return ResponseEntity.ok("Logout Success");
     }
+
+    @PutMapping("/changeInformUser")
+    public ResponseEntity<String> ChangeInform(@RequestParam String userName,
+                                               @RequestParam String password,
+                                               @RequestParam String changePassword,
+                                               HttpSession session){
+        try {
+            Users exitUser = UserRepo.findByUsernameAndPassword(userName,password);
+            if(exitUser != null){
+                    exitUser.setPassword(changePassword);
+                    UserRepo.save(exitUser);
+                    return ResponseEntity.ok("Update information Successfully");
+                }else{
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ID doesn't exit");
+            }
+        }catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Update User Failed");
+        }
+    }
 }

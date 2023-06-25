@@ -17,6 +17,11 @@ $(document).ready(()=>{
     totalQuantity();
     inforUserLogin();
     Userlogout();
+    detailsProduct();
+
+    $(".back").click(function (){
+        $("#product").hide();
+    });
 });
 
 function loadProduct(){
@@ -36,7 +41,7 @@ function loadProduct(){
                     '<div class="tshirt_img"><img src="/images/'+ product.image+'" style="max-width: 100%; height: auto;"></div>' +
                     '<div class="btn_main">' +
                     '<button class="btn btn-warning cart-btn" data-id="' + product.id + '">Add To Cart</button>' +
-                    '<button class="btn btn-primary details-btn" data-id="' + product.id + '">Details</button>' +
+                    '<button class="btn btn-primary details-btn" data-toggle="modal" data-target="#product-modal"  data-id="' + product.id + '">Details</button>' +
                     '</div>' +
                     '</div>' +
                     '</div>';
@@ -64,7 +69,7 @@ function loadProduct(){
                     '<div class="tshirt_img"><img src="/images/'+ product.image+'" style="max-width: 100%; height: auto;"></div>' +
                     '<div class="btn_main">' +
                     '<button class="btn btn-warning cart-btn" data-id="' + product.id + '">Add To Cart</button>' +
-                    '<button class="btn btn-primary details-btn" data-id="' + product.id + '">Details</button>' +
+                    '<button class="btn btn-primary details-btn" data-toggle="modal" data-target="#product" data-id="' + product.id + '">Details</button>' +
                     '</div>' +
                     '</div>' +
                     '</div>';
@@ -132,10 +137,12 @@ function inforUserLogin(){
                 $("#NameUser").append(name);
                 $("#loginPage").hide();
                 $("#logoutPage").show();
+                $(".change").show();
             } else{
                 $("#NameUser").append("");
                 $("#loginPage").show();
                 $("#logoutPage").hide();
+                $(".change").hide();
             }
 
         },
@@ -160,6 +167,27 @@ function Userlogout() {
             }
         })
     })
+}
+
+function detailsProduct() {
+    $(document).on("click",".details-btn",function () {
+        let productId = $(this).attr('data-id');
+        $("#product").show();
+        $.ajax({
+            url: "/apiProduct/GetProductById/" + productId,
+            type: "GET",
+            success: function(data) {
+                $('#modal-product-image').attr('src', "/images/" + data.image);
+                $('#modal-product-name').text(data.name);
+                $('#modal-product-description').text(data.decription);
+                $('#modal-product-price').text(data.price);
+                $('.cart-btn').attr("data-id",productId);
+            },
+            error: function(xhr, status, error) {
+                console.log("Error: " + error);
+            }
+    });
+});
 }
 
 
